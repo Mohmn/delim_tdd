@@ -1,8 +1,30 @@
-
 class DelimeterParser:
     def __init__(self, numbers: str):
         self.numbers = numbers
-        self.delimiters = set(["\n", ","])
+        self.delimiters = set()
+        self.parse_numbers_from = 0
+        self._parse_delims()
+
+    def _parse_delims(self):
+        if self.numbers[0:2] == "//":
+            self.custom_delims_present = True
+            i = 2
+            delim = ""
+            char = ""
+            while char != "\n":
+                char = self.numbers[i]
+                if char == "[":
+                    delim = ""
+                elif char == "]":
+                    self.delimiters.add(delim)
+                    delim = ""
+                else:
+                    delim += char
+                i += 1
+            self.parse_numbers_from = i
+        else:
+            self.delimiters.add("\n")
+            self.delimiters.add(",")
 
     def parse(self):
         number = ""
