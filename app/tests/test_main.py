@@ -1,7 +1,7 @@
 # test_app.py
 # import pytest
 import pytest
-from app.main import add
+from app.main import add, InvalidDelemiterException
 
 
 # int add(string numbers)

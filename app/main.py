@@ -1,3 +1,7 @@
+class InvalidDelemiterException(Exception):
+    pass
+
+
 class DelimeterParser:
     def __init__(self, numbers: str):
         self.numbers = numbers
@@ -30,11 +34,13 @@ class DelimeterParser:
         number = ""
         num_len = len(self.numbers)
         delim = ""
-        i = 0
+        i = self.parse_numbers_from
         while i < num_len:
             char = self.numbers[i]
             if char.isdigit():
                 if delim:
+                    if delim not in self.delimiters:
+                        raise InvalidDelemiterException("Invalid Delimeter")
                     delim = ""
                 number += char
             else:
