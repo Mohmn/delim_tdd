@@ -15,3 +15,5 @@ def test_add():
     assert add("//[>][%]\n1>2%3%4") == 10
     with pytest.raises(InvalidDelemiterException):
         assert add("//[*][%]\n1*2f3") == 6
+    with pytest.raises(NegativeNumberException):
+        assert add("1\n2,-3") == 0
