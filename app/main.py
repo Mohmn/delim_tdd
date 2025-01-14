@@ -82,13 +82,12 @@ class DelimeterParser:
         for num in self.parse():
             if float(num) < 0:
                 neg_numbers.append(num)
-            summation += float(num)
+            if float(num) < 1001:
+                summation += float(num)
         if len(neg_numbers) > 0:
             raise NegativeNumberException(neg_numbers)
         return summation
 
 def add(numbers: str) -> int:
-    if numbers == "":
-        return 0
     delimeterParser = DelimeterParser(numbers)
     return delimeterParser.sum()
