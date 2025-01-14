@@ -1,5 +1,6 @@
 # test_app.py
 # import pytest
+import pytest
 from app.main import add
 
 
@@ -12,3 +13,5 @@ def test_add():
     assert add("//[*][%]\n1*2%3") == 6
     assert add("//[***][%]\n1***2%3%4") == 10
     assert add("//[>][%]\n1>2%3%4") == 10
+    with pytest.raises(InvalidDelemiterException):
+        assert add("//[*][%]\n1*2f3") == 6
