@@ -1,6 +1,23 @@
+from typing import List
+
+
 class InvalidDelemiterException(Exception):
     pass
 
+
+class NegativeNumberException(Exception):
+    def __init__(self, negatives: List[str]):
+        self.negatives = negatives
+        super().__init__(f"Negatives not allowed: {', '.join(map(str, negatives))}")
+
+
+
+def isDigit(char: str) -> bool:
+    try:
+        int(char)
+        return True
+    except ValueError:
+        return False
 
 class DelimeterParser:
     def __init__(self, numbers: str):
@@ -37,7 +54,11 @@ class DelimeterParser:
         i = self.parse_numbers_from
         while i < num_len:
             char = self.numbers[i]
-            if char.isdigit():
+            if number == "" and char == "-":
+                number += char
+                i += 1
+                continue
+            if isDigit(char):
                 if delim:
                     if delim not in self.delimiters:
                         raise InvalidDelemiterException("Invalid Delimeter")
@@ -51,10 +72,23 @@ class DelimeterParser:
             i += 1
 
         if number:
+            if number == "-":
+                raise InvalidDelemiterException("Invalid Delimeter")
             yield number
+
+    def sum(self):
+        neg_numbers = []
+        summation = 0
+        for num in self.parse():
+            if float(num) < 0:
+                neg_numbers.append(num)
+            summation += float(num)
+        if len(neg_numbers) > 0:
+            raise NegativeNumberException(neg_numbers)
+        return summation
 
 def add(numbers: str) -> int:
     if numbers == "":
         return 0
     delimeterParser = DelimeterParser(numbers)
-    return sum(int(item) for item in delimeterParser.parse())
+    return delimeterParser.sum()
